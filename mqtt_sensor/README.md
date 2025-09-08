@@ -1,24 +1,18 @@
-# Projeto MQTT - Sensor Python com TLS e Autenticação
+//Projeto MQTT - Sensor Python com TLS e Autenticação
+//Estrutura do Projeto
 
-Este projeto demonstra um ambiente MQTT seguro, com um **broker Mosquitto**, um **sensor de temperatura em Python** e um **subscriber TLS**. O objetivo é garantir **autenticação, segregação de portas e criptografia** nas conexões externas, enquanto o sensor opera de forma funcional na rede interna.
-
----
-
-## Estrutura do Projeto
-
--   `docker-compose.yml`: Define os serviços do broker, do sensor e do subscriber.
--   `src/temperature-sensor-1.py`: Código Python do sensor de temperatura.
--   `mosquitto/config/mosquitto.conf`: Arquivo de configuração do broker.
--   `mosquitto/config/mosquitto.passwd`: Senhas de autenticação.
--   `mosquitto/config/mosquitto.acl`: Regras de controle de acesso por tópico.
--   `mosquitto/certs/`: Certificados TLS (`ca.crt`, `server.crt`, `server.key`).
+`docker-compose.yml`: Define os serviços do broker, do sensor e do subscriber.
+`src/temperature-sensor-1.py`: Código Python do sensor de temperatura.
+`mosquitto/config/mosquitto.conf`: Arquivo de configuração do broker.
+`mosquitto/config/mosquitto.passwd`: Senhas de autenticação.
+`mosquitto/config/mosquitto.acl`: Regras de controle de acesso por tópico.
+`mosquitto/certs/`: Certificados TLS (`ca.crt`, `server.crt`, `server.key`).
 
 ---
 
-## Alterações e Correções
+//Alterações e Correções
 
-### 1. Sensor Python
-
+//1. Sensor Python
 O sensor Python foi corrigido para funcionar de maneira confiável. Os seguintes problemas foram resolvidos:
 
 -   **Protocolo:** O protocolo (presente no .py) foi alterado de `MQTTv5` para `MQTTv3.1.1` (`MQTTv311`) para garantir compatibilidade com o Mosquitto 2.0.20.
@@ -26,8 +20,8 @@ O sensor Python foi corrigido para funcionar de maneira confiável. Os seguintes
 
 Como resultado, o sensor agora publica leituras de forma contínua e confiável.
 
-### 2. Broker MQTT
 
+//2. Broker MQTT
 O broker foi configurado para gerenciar o tráfego de maneira segura:
 
 -   **Porta 1883:** Dedicada à comunicação interna de sensores, sem a necessidade de TLS.
@@ -44,9 +38,9 @@ topic readwrite sensor/#
 
 -----
 
-## Como Executar o Projeto
+/Como Executar o Projeto
 
-### 1\. Criando a Autenticação
+// 1\. Criando a Autenticação
 
 Para adicionar uma camada de segurança ao broker, a autenticação foi configurada. As etapas a seguir foram executadas para criar e gerenciar um arquivo de senhas, garantindo que apenas usuários autorizados possam se conectar.
 
@@ -75,7 +69,7 @@ Para adicionar uma camada de segurança ao broker, a autenticação foi configur
 
     Após a execução, um arquivo de senhas criptografadas foi gerado, contendo as credenciais de acesso.
 
-### 2\. Executando os Serviços
+// 2\. Executando os Serviços
 
 1.  **Inicie os serviços:**
     ```bash
@@ -84,15 +78,15 @@ Para adicionar uma camada de segurança ao broker, a autenticação foi configur
 
 -----
 
-## Testes
+// Testes
 
-### Publicar manualmente (sensor interno)
+// Publicar manualmente (sensor interno)
 
-```bash
+/*bash*/
+
 mosquitto_pub -h localhost -p 1883 -t 'sensor/temperature' -m '27.5' -d
-```
 
-### Subscriber externo via TLS
+// Subscriber externo via TLS
 
 ```bash
 mosquitto_sub -h localhost -p 8883 --cafile ./mosquitto/certs/ca.crt -t 'sensor/#' -v --tls-version tlsv1.2 -u <USUÁRIO_CRIADO> -P <SENHA> -d
@@ -100,12 +94,10 @@ mosquitto_sub -h localhost -p 8883 --cafile ./mosquitto/certs/ca.crt -t 'sensor/
 
 -----
 
-## Resumo Técnico
-
+// Resumo Técnico
   - O **Sensor Python** foi corrigido e está funcionando via **TCP** na rede interna.
   - O protocolo foi alterado de **MQTTv5** para **MQTTv3.1.1**.
   - O broker foi configurado com **TLS** e **autenticação** para conexões externas.
   - A segregação de portas (1883 para internos e 8883 para externos) garante a segurança do tráfego.
   - **Certificados TLS** foram criados para proteger a comunicação externa.
 
-Este projeto demonstra boas práticas de segurança MQTT, mantendo o ambiente funcional e garantindo a integridade dos dados transmitidos.
