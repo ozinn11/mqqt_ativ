@@ -2,10 +2,15 @@
 //Estrutura do Projeto
 
 `docker-compose.yml`: Define os serviços do broker, do sensor e do subscriber.
+
 `src/temperature-sensor-1.py`: Código Python do sensor de temperatura.
+
 `mosquitto/config/mosquitto.conf`: Arquivo de configuração do broker.
+
 `mosquitto/config/mosquitto.passwd`: Senhas de autenticação.
+
 `mosquitto/config/mosquitto.acl`: Regras de controle de acesso por tópico.
+
 `mosquitto/certs/`: Certificados TLS (`ca.crt`, `server.crt`, `server.key`).
 
 ---
